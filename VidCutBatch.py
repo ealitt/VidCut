@@ -7,7 +7,7 @@ imgPerSec = 10
 
 dir = "videos/"
 
-data = glob.glob(dir + '*.mp4')
+data = glob.glob(dir + '*.MOV')
 
 for video in data:
     fileName = os.path.basename(video)
@@ -26,13 +26,14 @@ for video in data:
     working, image = vid.read()
 
     while working:
-        frames = count * (1000 / imgPerSec)
-        vid.set(cv.CAP_PROP_POS_MSEC,(frames))
-        working, image = vid.read()
+        try:
+            frames = count * (1000 / imgPerSec)
+            vid.set(cv.CAP_PROP_POS_MSEC,(frames))
+            working, image = vid.read()
 
-        cv.imwrite(dir + fileName + "/frame{}.png".format(count), image)
-        count += 1
-        # if count > 500:
-        #    working = False
+            cv.imwrite(dir + fileName + "/frame{}.png".format(count), image)
+            count += 1
+        except:
+            print("Bad frame")
 
     print("Finished: {}".format(fileName))
